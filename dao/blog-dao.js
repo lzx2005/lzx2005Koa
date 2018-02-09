@@ -1,36 +1,26 @@
-const mysql = require('mysql');
-const config = require('../config.js');
-const pool  = mysql.createPool({
-    host     : config.database.HOST,
-    user     : config.database.USERNAME,
-    password : config.database.PASSWORD,
-    database : config.database.DATABASE
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('mysql://root:123456@localhost:3306/lzx2005');
+const Blog = sequelize.define('blog', {
+    blog_id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    title: Sequelize.STRING,
+    author: Sequelize.STRING,
+    description: Sequelize.STRING,
+    create_time: Sequelize.DATE,
+    view: Sequelize.INTEGER,
+    blog_type:Sequelize.BIGINT,
+    markdown:Sequelize.BOOLEAN,
+    tags:Sequelize.STRING
+},{
+    tableName: 'blog',
+    underscored: true,
+    createdAt: false,
+    updatedAt: false,
 });
 
-let query = function( sql, values ) {
-    return new Promise(( resolve, reject ) => {
-        pool.getConnection(function(err, connection) {
-            if (err) {
-                resolve( err )
-            } else {
-                connection.query(sql, values, ( err, rows) => {
-                    if ( err ) {
-                        reject( err )
-                    } else {
-                        resolve( rows )
-                    }
-                    connection.release()
-                })
-            }
-        })
-    })
-};
-
-let findAllBlog = function (  ) {
-    let _sql = `SELECT * FROM blog`;
-    return query( _sql)
-};
-
 module.exports={
-    findAllBlog
+    Blog
 };

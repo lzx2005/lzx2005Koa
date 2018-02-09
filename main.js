@@ -1,25 +1,9 @@
 const Koa = require('koa');
 const app = new Koa();
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('mysql://root:123456@localhost:3306/lzx2005');
-const Blog = sequelize.define('blog', {
-    blog_id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    title: Sequelize.STRING,
-    author: Sequelize.STRING
-},{
-    tableName: 'blog',
-    underscored: true,
-    createdAt: false,
-    updatedAt: false,
-});
+const blogDao = require("./dao/blog-dao");
 
 app.use(async ctx => {
-    let all = Blog.findAll();
-    console.log(all);
+    let all = await blogDao.Blog.findAll();
     ctx.body = all;
 });
 
