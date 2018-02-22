@@ -20,7 +20,7 @@ router.get('/blogs/:page', async (ctx, next) => {
     let pageSize = 10;
     let page = 1;
     let result = {};
-    if(isNaN(ctx.params.page)){
+    if(isNaN(ctx.params.page) || parseInt(ctx.params.page)<1){
         result.errorCode = 10000;
         result.msg = "页码输入错误";
         ctx.body = result;
@@ -28,12 +28,6 @@ router.get('/blogs/:page', async (ctx, next) => {
     }
     if(ctx.params.page){
         page = parseInt(ctx.params.page);
-    }
-    if(page<1){
-        result.errorCode = 10000;
-        result.msg = "页码输入错误";
-        ctx.body = result;
-        return;
     }
     let data = await blogDao.Blog.findAll({
         offset: (page-1)*pageSize ,
