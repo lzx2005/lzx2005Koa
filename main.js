@@ -19,8 +19,21 @@ router.get('/hello/:name', async (ctx, next) => {
 router.get('/blogs/:page', async (ctx, next) => {
     let pageSize = 10;
     let page = 1;
+    let result = {};
+    if(isNaN(ctx.params.page)){
+        result.errorCode = 10000;
+        result.msg = "页码输入错误";
+        ctx.body = result;
+        return;
+    }
     if(ctx.params.page){
         page = parseInt(ctx.params.page);
+    }
+    if(page<1){
+        result.errorCode = 10000;
+        result.msg = "页码输入错误";
+        ctx.body = result;
+        return;
     }
     let data = await blogDao.Blog.findAll({
         offset: (page-1)*pageSize ,
@@ -28,12 +41,13 @@ router.get('/blogs/:page', async (ctx, next) => {
         order: [['create_time', 'DESC']]
     });
 
-    let result = {};
     result.data = data;
     result.info = {
         'page': page,
         'pageSize': pageSize
     };
+    result.errorCode = 0;
+    result.msg = "请求正常";
     ctx.body = result;
 });
 
