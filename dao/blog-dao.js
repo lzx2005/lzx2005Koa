@@ -13,7 +13,8 @@ const Blog = sequelize.define('blog', {
     view: Sequelize.INTEGER,
     blog_type:Sequelize.BIGINT,
     markdown:Sequelize.BOOLEAN,
-    tags:Sequelize.STRING
+    tags:Sequelize.STRING,
+    content:Sequelize.TEXT
 },{
     tableName: 'blog',
     underscored: true,

@@ -30,6 +30,16 @@ router.get('/blogs/:page', async (ctx, next) => {
         page = parseInt(ctx.params.page);
     }
     let data = await blogDao.Blog.findAll({
+        attributes: [
+            'blog_id',
+            'title',
+            'author',
+            'description',
+            'create_time',
+            'view',
+            'blog_type',
+            'tags'
+        ],
         offset: (page-1)*pageSize ,
         limit: pageSize,
         order: [['create_time', 'DESC']]
@@ -42,6 +52,17 @@ router.get('/blogs/:page', async (ctx, next) => {
     };
     result.errorCode = 0;
     result.msg = "请求正常";
+    ctx.body = result;
+});
+
+
+router.get('/blogs/d/:id', async (ctx, next) => {
+    let result = {};
+    let id = ctx.params.id;
+    let data = await blogDao.Blog.findById(id);
+    result.errorCode = 0;
+    result.msg = "请求正常";
+    result.data = data;
     ctx.body = result;
 });
 
