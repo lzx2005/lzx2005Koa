@@ -9,7 +9,9 @@ const config = {
         PASSWORD: '123456',
         PORT: '3306',
         HOST: 'localhost'
-    }
+    },
+
+    token: "e9deac0bebef6b088950c6bf4c02fdf861dde893"
 };
 
 module.exports = config;
